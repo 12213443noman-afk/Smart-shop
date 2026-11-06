@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>স্মার্ট দোকানের ডিজিটাল খাতা Pro</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: rgba(255, 255, 255, 0.06);
+            --bg-card-hover: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.12);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --radius: 14px;
+            --radius-sm: 10px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #e2e8f0;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-hover: rgba(255, 255, 255, 0.95);
+            --border: rgba(0, 0, 0, 0.1);
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(160deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 12px;
+            padding-bottom: 95px;
+            overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .app-header {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px 14px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+        }
+        [data-theme="light"] .app-header {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .header-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .theme-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .dash-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 6px;
+            text-align: center;
+        }
+
+        .dash-card h4 {
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .dash-card p {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .shift-box {
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            border-radius: var(--radius);
+            padding: 11px 13px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .shift-box h4 { font-size: 12px; color: var(--warning); }
+        .shift-box p { font-size: 11px; color: var(--text-secondary); }
+
+        .btn {
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+        .btn:active { transform: scale(0.96); }
+
+        .btn-shift {
+            background: var(--warning);
+            color: #000;
+            padding: 7px 12px;
+            font-size: 12px;
+        }
+        .btn-shift.active {
+            background: var(--danger);
+            color: white;
+        }
+
+        .ai-box {
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: var(--radius);
+            padding: 12px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .ai-box h3 { font-size: 13px; color: var(--accent); margin-bottom: 6px; }
+        .btn-ai {
+            background: #0284c7;
+            color: white;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+        .ai-response {
+            font-size: 12px;
+            color: var(--text-primary);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 9px;
+            border-radius: 9px;
+            text-align: left;
+            line-height: 1.45;
+            min-height: 36px;
+        }
+        [data-theme="light"] .ai-response { background: rgba(0,0,0,0.05); }
+
+        .form-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+        .form-card h3 {
+            font-size: 14px;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .input-row { display: flex; gap: 8px; }
+
+        .input-field {
+            width: 100%;
+            padding: 10px 11px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+        }
+        [data-theme="light"] .input-field {
+            background: rgba(0,0,0,0.04);
+        }
+        .input-field:focus { border-color: var(--accent); }
+        .input-field::placeholder { color: #64748b; }
+
+        select.input-field {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 32px;
+        }
+        select.input-field option { background: #1e293b; color: #fff; }
+
+        .btn-submit {
+            width: 100%;
+            padding: 11px;
+            background: linear-gradient(135deg, #059669, #10b981);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* Filter & Search */
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .search-box {
+            flex: 1;
+            min-width: 140px;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+        }
+        [data-theme="light"] .search-box { background: rgba(0,0,0,0.04); }
+
+        .sort-select {
+            padding: 9px 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            color: var(--text-primary);
+            font-size: 12px;
+            max-width: 120px;
+        }
+
+        .category-chips {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .category-chips::-webkit-scrollbar { display: none; }
+
+        .chip {
+            flex-shrink: 0;
+            padding: 6px 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .chip.active {
+            background: var(--accent);
+            color: #0f172a;
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+
+        .product-list, .due-list, .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .product-card, .due-card, .history-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .product-card.low-stock {
+            border-color: rgba(239, 68, 68, 0.5);
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        .product-info { flex: 1; min-width: 0; }
+        .product-info h3 {
+            font-size: 13.5px;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+            word-break: break-word;
+        }
+        .product-info p {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+
+        .stock-badge {
+            display: inline-block;
+            padding: 2px 7px;
+            font-size: 10.5px;
+            border-radius: 5px;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+        .in-stock { background: rgba(34, 197, 94, 0.18); color: #4ade80; }
+        .low-stock-badge { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+        .cat-tag {
+            display: inline-block;
+            font-size: 10px;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent);
+            padding: 1px 6px;
+            border-radius: 4px;
+            margin-left: 4px;
+        }
+
+        .action-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+
+        .sell-box { display: flex; gap: 4px; align-items: center; }
+        .sell-input {
+            width: 52px;
+            padding: 5px 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .btn-sell { background: var(--success); color: white; padding: 5px 8px; border-radius: 6px; font-size: 11px; }
+        .btn-due { background: var(--danger); color: white; padding: 5px 8px; border-radius: 6px; font-size: 11px; }
+        .btn-group-row { display: flex; gap: 4px; }
+        .btn-edit { background: var(--warning); color: #000; padding: 3px 7px; border-radius: 5px; font-size: 11px; }
+        .btn-delete { background: #475569; color: white; padding: 3px 7px; border-radius: 5px; font-size: 11px; }
+
+        .due-section {
+            background: rgba(239, 68, 68, 0.06);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            border-radius: var(--radius);
+            padding: 14px;
+        }
+        .due-section h3 { font-size: 14px; color: #f87171; margin-bottom: 10px; }
+
+        .btn-pay {
+            background: var(--info);
+            color: white;
+            padding: 7px 11px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .section { display: none; animation: fadeIn 0.22s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 7px 0 calc(7px + env(safe-area-inset-bottom));
+            z-index: 100;
+        }
+        [data-theme="light"] .bottom-nav {
+            background: rgba(255, 255, 255, 0.96);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 10.5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .nav-item.active { color: var(--accent); }
+        .nav-item span { font-size: 19px; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(6px);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            padding: 18px;
+        }
+        .modal-overlay.show { display: flex; }
+
+        .modal-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px;
+            width: 100%;
+            max-width: 380px;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: modalIn 0.22s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.93); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-card h3 { color: var(--accent); margin-bottom: 12px; font-size: 15px; }
+
+        .modal-btns { display: flex; gap: 9px; margin-top: 12px; }
+        .btn-cancel {
+            background: #475569;
+            color: white;
+            padding: 10px;
+            border-radius: 9px;
+            flex: 1;
+            font-weight: 600;
+        }
+        .btn-confirm {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            padding: 10px;
+            border-radius: 9px;
+            flex: 1;
+            font-weight: 600;
+        }
+
+        .toast {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-120px);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 11px 18px;
+            border-radius: 11px;
+            font-size: 13px;
+            z-index: 2000;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast.success { border-color: var(--success); }
+        .toast.error { border-color: var(--danger); }
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+            margin-bottom: 14px;
+        }
+        .report-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            text-align: center;
+        }
+        .report-card h4 { font-size: 11px; color: var(--text-secondary); margin-bottom: 5px; }
+        .report-card p { font-size: 16px; font-weight: 700; }
+
+        .empty-state {
+            text-align: center;
+            padding: 28px 14px;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            color: var(--accent);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 11px;
+            border-radius: 7px;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .profit-tag {
+            font-size: 10.5px;
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            padding: 1px 5px;
+            border-radius: 4px;
+            margin-left: 3px;
+        }
+
+        .receipt-box {
+            background: #fff;
+            color: #111;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .receipt-box h3 { text-align: center; margin-bottom: 8px; color: #111; }
+        .receipt-box .line { border-top: 1px dashed #999; margin: 8px 0; }
+
+        .product-count {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .hidden { display: none !important; }
+        .text-success { color: var(--success); }
+        .text-danger { color: var(--danger); }
+        .text-accent { color: var(--accent); }
+        .text-warning { color: var(--warning); }
+    </style>
+</head>
+<body>
+
+    <div class="toast" id="toast"></div>
+
+    <!-- Header -->
+    <div class="app-header">
+        <div class="header-top">
+            <div class="header-title">🏪 স্মার্ট দোকানের খাতা Pro</div>
+            <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+        </div>
+        <div class="dashboard-grid">
+            <div class="dash-card">
+                <h4>শিফটের ক্যাশ বিক্রি</h4>
+                <p id="myShiftSales" class="text-success">৳ ০</p>
+            </div>
+            <div class="dash-card">
+                <h4>শিফটের মোট লাভ</h4>
+                <p id="myShiftProfit" class="text-accent">৳ ০</p>
+            </div>
+            <div class="dash-card">
+                <h4>শিফটের বাকি বিক্রি</h4>
+                <p id="myShiftDue" class="text-danger">৳ ০</p>
+            </div>
+            <div class="dash-card">
+                <h4>কম স্টক আইটেম</h4>
+                <p id="lowStockCount" class="text-danger">০ টি</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shift -->
+    <div class="shift-box">
+        <div>
+            <h4>⏱️ শিফট ট্র্যাকার</h4>
+            <p id="shiftStatus">শিফট বন্ধ আছে</p>
+        </div>
+        <button class="btn btn-shift" id="shiftBtn" onclick="toggleShift()">নতুন শিফট শুরু</button>
+    </div>
+
+    <!-- AI -->
+    <div class="ai-box">
+        <h3>🤖 এআই মার্কেট সহকারী</h3>
+        <button class="btn btn-ai" onclick="askMarketAI()">💡 স্টক ও মার্কেট পরামর্শ নিন</button>
+        <div class="ai-response" id="aiReply">এখানে এআই-এর পরামর্শ দেখাবে...</div>
+    </div>
+
+    <!-- ========== PRODUCTS ========== -->
+    <div class="section active" id="section-products">
+        <div class="form-card">
+            <h3>➕ নতুন পণ্য এন্ট্রি</h3>
+            <div class="input-group">
+                <input type="text" id="pName" class="input-field" placeholder="পণ্যের নাম">
+                <div class="input-row">
+                    <select id="pCategory" class="input-field">
+                        <option value="চাল">চাল</option>
+                        <option value="ডাল">ডাল</option>
+                        <option value="তেল">তেল</option>
+                        <option value="মসলা">মসলা</option>
+                        <option value="সাবান">সাবান-শ্যাম্পু</option>
+                        <option value="বিস্কুট">বিস্কুট-চানাচুর</option>
+                        <option value="সিগারেট">সিগারেট</option>
+                        <option value="অন্যান্য">অন্যান্য</option>
+                    </select>
+                    <select id="pUnitType" class="input-field" onchange="toggleUnitFields()">
+                        <option value="kg">কেজি/বস্তা</option>
+                        <option value="piece">পিস/প্যাকেট</option>
+                    </select>
+                </div>
+                <div class="input-row" id="bagFields">
+                    <input type="number" id="pBagCount" class="input-field" placeholder="বস্তা/পরিমাণ" step="any">
+                    <input type="number" id="pKgPerBag" class="input-field" placeholder="কেজি/বস্তা" step="any">
+                </div>
+                <div class="input-row">
+                    <input type="number" id="pBuyPrice" class="input-field" placeholder="কেনা দাম ৳" step="any">
+                    <input type="number" id="pSellPrice" class="input-field" placeholder="বিক্রি দাম ৳" step="any">
+                </div>
+            </div>
+            <button class="btn btn-submit" onclick="addProduct()">স্টকে সেভ করুন</button>
+        </div>
+
+        <!-- Search + Sort + Category -->
+        <div class="filter-bar">
+            <input type="text" class="search-box" id="searchInput" placeholder="🔍 পণ্য খুঁজুন..." oninput="renderProducts()">
+            <select class="sort-select" id="sortSelect" onchange="renderProducts()">
+                <option value="name">নাম অনুসারে</option>
+                <option value="lowstock">কম স্টক আগে</option>
+                <option value="profit">বেশি লাভ আগে</option>
+                <option value="stock">বেশি স্টক আগে</option>
+            </select>
+        </div>
+
+        <div class="category-chips" id="categoryChips">
+            <div class="chip active" data-cat="all" onclick="filterCategory('all')">সব</div>
+            <div class="chip" data-cat="চাল" onclick="filterCategory('চাল')">চাল</div>
+            <div class="chip" data-cat="ডাল" onclick="filterCategory('ডাল')">ডাল</div>
+            <div class="chip" data-cat="তেল" onclick="filterCategory('তেল')">তেল</div>
+            <div class="chip" data-cat="মসলা" onclick="filterCategory('মসলা')">মসলা</div>
+            <div class="chip" data-cat="সাবান" onclick="filterCategory('সাবান')">সাবান</div>
+            <div class="chip" data-cat="বিস্কুট" onclick="filterCategory('বিস্কুট')">বিস্কুট</div>
+            <div class="chip" data-cat="সিগারেট" onclick="filterCategory('সিগারেট')">সিগারেট</div>
+            <div class="chip" data-cat="অন্যান্য" onclick="filterCategory('অন্যান্য')">অন্যান্য</div>
+        </div>
+
+        <div class="product-count" id="productCount">মোট ০ টি পণ্য</div>
+        <div class="product-list" id="productList"></div>
+    </div>
+
+    <!-- ========== DUE ========== -->
+    <div class="section" id="section-due">
+        <div class="due-section">
+            <div class="section-title">
+                <span>📖 কাস্টমারের বাকি খাতা</span>
+                <span id="totalDueAmount" class="text-danger" style="font-size:13px;">৳ ০</span>
+            </div>
+            <input type="text" class="search-box" id="dueSearch" placeholder="🔍 কাস্টমার খুঁজুন..." oninput="renderDueLedger()" style="margin-bottom:10px; width:100%;">
+            <div class="due-list" id="dueList"></div>
+        </div>
+    </div>
+
+    <!-- ========== HISTORY ========== -->
+    <div class="section" id="section-history">
+        <div class="section-title">
+            <span>📜 বিক্রির ইতিহাস</span>
+            <button class="btn btn-small btn-outline" onclick="clearHistory()">সব মুছুন</button>
+        </div>
+        <div class="history-list" id="historyList"></div>
+    </div>
+
+    <!-- ========== REPORTS ========== -->
+    <div class="section" id="section-reports">
+        <div class="section-title">📊 সার্বিক রিপোর্ট</div>
+        <div class="report-grid">
+            <div class="report-card">
+                <h4>মোট স্টক মূল্য (কেনা)</h4>
+                <p id="reportStockValue" class="text-accent">৳ ০</p>
+            </div>
+            <div class="report-card">
+                <h4>মোট সম্ভাব্য বিক্রি</h4>
+                <p id="reportPotentialSales" class="text-success">৳ ০</p>
+            </div>
+            <div class="report-card">
+                <h4>মোট বাকি আছে</h4>
+                <p id="reportTotalDue" class="text-danger">৳ ০</p>
+            </div>
+            <div class="report-card">
+                <h4>মোট পণ্য</h4>
+                <p id="reportProductCount" class="text-warning">০ টি</p>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <h3>💾 ডেটা ব্যাকআপ ও রিস্টোর</h3>
+            <div style="display:flex; gap:9px; margin-top:8px;">
+                <button class="btn btn-submit" style="flex:1; background:linear-gradient(135deg,#0284c7,#0ea5e9);" onclick="exportData()">এক্সপোর্ট</button>
+                <button class="btn btn-submit" style="flex:1; background:linear-gradient(135deg,#7c3aed,#8b5cf6);" onclick="document.getElementById('importFile').click()">ইমপোর্ট</button>
+            </div>
+            <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)">
+            <p style="font-size:11px; color:var(--text-secondary); margin-top:9px; text-align:center;">
+                ব্যাকআপ ফাইল সেভ করে রাখুন। ফোন পরিবর্তন করলে ইমপোর্ট করুন।
+            </p>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-card">
+            <h3>✏️ পণ্য এডিট</h3>
+            <input type="hidden" id="editId">
+            <div class="input-group">
+                <input type="text" id="editName" class="input-field" placeholder="নাম">
+                <select id="editCategory" class="input-field">
+                    <option value="চাল">চাল</option>
+                    <option value="ডাল">ডাল</option>
+                    <option value="তেল">তেল</option>
+                    <option value="মসলা">মসলা</option>
+                    <option value="সাবান">সাবান-শ্যাম্পু</option>
+                    <option value="বিস্কুট">বিস্কুট-চানাচুর</option>
+                    <option value="সিগারেট">সিগারেট</option>
+                    <option value="অন্যান্য">অন্যান্য</option>
+                </select>
+                <input type="number" id="editBuyPrice" class="input-field" placeholder="কেনা দাম" step="any">
+                <input type="number" id="editSellPrice" class="input-field" placeholder="বিক্রি দাম" step="any">
+                <input type="number" id="editTotalKg" class="input-field" placeholder="মোট স্টক" step="any">
+            </div>
+            <div class="modal-btns">
+                <button class="btn btn-cancel" onclick="closeEditModal()">বাতিল</button>
+                <button class="btn btn-confirm" onclick="saveEdit()">সেভ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sale Modal -->
+    <div class="modal-overlay" id="saleModal">
+        <div class="modal-card">
+            <h3 id="saleModalTitle">বিক্রি নিশ্চিত করুন</h3>
+            <div class="input-group">
+                <p id="saleProductInfo" style="font-size:13px; color:var(--text-secondary); margin-bottom:6px;"></p>
+                <input type="number" id="saleAmount" class="input-field" placeholder="মোট টাকা" step="any">
+                <div id="dueCustomerField" class="hidden">
+                    <input type="text" id="saleCustomer" class="input-field" placeholder="কাস্টমারের নাম" style="margin-top:8px;">
+                </div>
+            </div>
+            <div class="modal-btns">
+                <button class="btn btn-cancel" onclick="closeSaleModal()">বাতিল</button>
+                <button class="btn btn-confirm" onclick="confirmSale()">নিশ্চিত + রিসিট</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Modal -->
+    <div class="modal-overlay" id="receiptModal">
+        <div class="modal-card">
+            <h3>🧾 বিক্রির রিসিট</h3>
+            <div class="receipt-box" id="receiptContent"></div>
+            <div class="modal-btns" style="margin-top:12px;">
+                <button class="btn btn-cancel" onclick="closeReceiptModal()">বন্ধ</button>
+                <button class="btn btn-confirm" onclick="printReceipt()">প্রিন্ট / শেয়ার</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="switchTab('products', this)">
+            <span>📦</span>পণ্য
+        </button>
+        <button class="nav-item" onclick="switchTab('due', this)">
+            <span>📖</span>বাকি
+        </button>
+        <button class="nav-item" onclick="switchTab('history', this)">
+            <span>📜</span>ইতিহাস
+        </button>
+        <button class="nav-item" onclick="switchTab('reports', this)">
+            <span>📊</span>রিপোর্ট
+        </button>
+    </nav>
+
+    <script>
+        // ========== STORAGE ==========
+        const KEYS = {
+            products: 'ss_products_v3',
+            due: 'ss_due_v3',
+            history: 'ss_history_v3',
+            shiftSales: 'ss_shift_sales_v3',
+            shiftProfit: 'ss_shift_profit_v3',
+            shiftDue: 'ss_shift_due_v3',
+            shiftActive: 'ss_shift_active_v3',
+            theme: 'ss_theme_v3'
+        };
+
+        // ========== DEFAULT PRODUCTS (বাজারদর অনুযায়ী ২০২৬) ==========
+        const defaultProducts = [
+            // চাল
+            { id: 1, name: "মিনিকেট চাল", category: "চাল", unitType: "kg", totalKg: 500, kgPerBag: 25, buyPrice: 68, sellPrice: 78 },
+            { id: 2, name: "নাজিরশাইল চাল", category: "চাল", unitType: "kg", totalKg: 400, kgPerBag: 25, buyPrice: 75, sellPrice: 85 },
+            { id: 3, name: "পাইজাম চাল", category: "চাল", unitType: "kg", totalKg: 300, kgPerBag: 25, buyPrice: 55, sellPrice: 62 },
+            { id: 4, name: "স্বর্ণা চাল (মোটা)", category: "চাল", unitType: "kg", totalKg: 400, kgPerBag: 50, buyPrice: 48, sellPrice: 54 },
+            { id: 5, name: "চিনিগুড়া পোলাও চাল", category: "চাল", unitType: "kg", totalKg: 50, kgPerBag: 5, buyPrice: 160, sellPrice: 185 },
+            // ডাল
+            { id: 6, name: "মসুর ডাল (বড় দানা)", category: "ডাল", unitType: "kg", totalKg: 80, kgPerBag: 25, buyPrice: 90, sellPrice: 102 },
+            { id: 7, name: "মসুর ডাল (মাঝারি)", category: "ডাল", unitType: "kg", totalKg: 60, kgPerBag: 25, buyPrice: 110, sellPrice: 125 },
+            { id: 8, name: "মুগ ডাল", category: "ডাল", unitType: "kg", totalKg: 40, kgPerBag: 20, buyPrice: 135, sellPrice: 155 },
+            { id: 9, name: "মসুর ডাল (ছোট)", category: "ডাল", unitType: "kg", totalKg: 30, kgPerBag: 20, buyPrice: 145, sellPrice: 165 },
+            { id: 10, name: "ছোলা", category: "ডাল", unitType: "kg", totalKg: 50, kgPerBag: 25, buyPrice: 105, sellPrice: 120 },
+            { id: 11, name: "অ্যাংকর ডাল", category: "ডাল", unitType: "kg", totalKg: 40, kgPerBag: 20, buyPrice: 60, sellPrice: 72 },
+            // তেল
+            { id: 12, name: "সয়াবিন তেল (১ লিটার)", category: "তেল", unitType: "piece", totalKg: 48, buyPrice: 185, sellPrice: 205 },
+            { id: 13, name: "সয়াবিন তেল (২ লিটার)", category: "তেল", unitType: "piece", totalKg: 24, buyPrice: 370, sellPrice: 410 },
+            { id: 14, name: "সয়াবিন তেল (৫ লিটার)", category: "তেল", unitType: "piece", totalKg: 12, buyPrice: 920, sellPrice: 1020 },
+            { id: 15, name: "পাম অয়েল (খোলা)", category: "তেল", unitType: "kg", totalKg: 30, buyPrice: 160, sellPrice: 175 },
+            // মসলা ও অন্যান্য
+            { id: 16, name: "চিনি", category: "মসলা", unitType: "kg", totalKg: 100, kgPerBag: 50, buyPrice: 105, sellPrice: 115 },
+            { id: 17, name: "লবণ (আয়োডিনযুক্ত)", category: "মসলা", unitType: "kg", totalKg: 50, kgPerBag: 1, buyPrice: 35, sellPrice: 42 },
+            { id: 18, name: "আটা (খোলা)", category: "মসলা", unitType: "kg", totalKg: 80, kgPerBag: 25, buyPrice: 46, sellPrice: 52 },
+            { id: 19, name: "ময়দা", category: "মসলা", unitType: "kg", totalKg: 40, kgPerBag: 25, buyPrice: 65, sellPrice: 75 },
+            { id: 20, name: "হলুদ গুঁড়া", category: "মসলা", unitType: "kg", totalKg: 10, buyPrice: 180, sellPrice: 220 },
+            { id: 21, name: "মরিচ গুঁড়া", category: "মসলা", unitType: "kg", totalKg: 8, buyPrice: 220, sellPrice: 260 },
+            { id: 22, name: "ধনিয়া গুঁড়া", category: "মসলা", unitType: "kg", totalKg: 6, buyPrice: 160, sellPrice: 195 },
+            // সাবান
+            { id: 23, name: "লাইফবয় সাবান ১৫০গ্রাম", category: "সাবান", unitType: "piece", totalKg: 36, buyPrice: 52, sellPrice: 62 },
+            { id: 24, name: "লাক্স সাবান ১৫০গ্রাম", category: "সাবান", unitType: "piece", totalKg: 30, buyPrice: 62, sellPrice: 72 },
+            { id: 25, name: "ডাভ সাবান", category: "সাবান", unitType: "piece", totalKg: 24, buyPrice: 55, sellPrice: 68 },
+            { id: 26, name: "সানসিল্ক শ্যাম্পু ৮০মিলি", category: "সাবান", unitType: "piece", totalKg: 20, buyPrice: 75, sellPrice: 90 },
+            { id: 27, name: "ক্লিয়ার শ্যাম্পু ৮০মিলি", category: "সাবান", unitType: "piece", totalKg: 18, buyPrice: 80, sellPrice: 95 },
+            // বিস্কুট
+            { id: 28, name: "অলটাইম টোস্ট বিস্কুট", category: "বিস্কুট", unitType: "piece", totalKg: 40, buyPrice: 68, sellPrice: 80 },
+            { id: 29, name: "প্রান চানাচুর", category: "বিস্কুট", unitType: "piece", totalKg: 50, buyPrice: 18, sellPrice: 25 },
+            { id: 30, name: "হরলিক্স ছোট কৌটা", category: "বিস্কুট", unitType: "piece", totalKg: 15, buyPrice: 115, sellPrice: 140 },
+            { id: 31, name: "ডানো গুঁড়ো দুধ", category: "বিস্কুট", unitType: "piece", totalKg: 20, buyPrice: 210, sellPrice: 240 },
+            { id: 32, name: "ম্যাগি নুডলস", category: "বিস্কুট", unitType: "piece", totalKg: 60, buyPrice: 18, sellPrice: 25 },
+            // সিগারেট
+            { id: 33, name: "বেনসন সিগারেট (পিস)", category: "সিগারেট", unitType: "piece", totalKg: 120, buyPrice: 17, sellPrice: 20 },
+            { id: 34, name: "ফার্স্ট ক্লাস সিগারেট", category: "সিগারেট", unitType: "piece", totalKg: 100, buyPrice: 7, sellPrice: 10 },
+            { id: 35, name: "মার্লবরো সিগারেট", category: "সিগারেট", unitType: "piece", totalKg: 80, buyPrice: 22, sellPrice: 28 },
+            // অন্যান্য
+            { id: 36, name: "ডিম (হালি)", category: "অন্যান্য", unitType: "piece", totalKg: 100, buyPrice: 48, sellPrice: 58 },
+            { id: 37, name: "ডিম (ডজন)", category: "অন্যান্য", unitType: "piece", totalKg: 40, buyPrice: 125, sellPrice: 145 },
+            { id: 38, name: "চা পাতা (প্যাকেট)", category: "অন্যান্য", unitType: "piece", totalKg: 30, buyPrice: 55, sellPrice: 70 },
+            { id: 39, name: "ম্যাচ বক্স", category: "অন্যান্য", unitType: "piece", totalKg: 100, buyPrice: 1.5, sellPrice: 2 },
+            { id: 40, name: "মোমবাতি", category: "অন্যান্য", unitType: "piece", totalKg: 50, buyPrice: 8, sellPrice: 12 }
+        ];
+
+        let products = JSON.parse(localStorage.getItem(KEYS.products));
+        if (!products || !Array.isArray(products) || products.length === 0) {
+            products = defaultProducts;
+            localStorage.setItem(KEYS.products, JSON.stringify(products));
+        }
+
+        let dueLedger = JSON.parse(localStorage.getItem(KEYS.due)) || [];
+        let salesHistory = JSON.parse(localStorage.getItem(KEYS.history)) || [];
+        let myShiftSalesAmount = Number(localStorage.getItem(KEYS.shiftSales)) || 0;
+        let myShiftProfitAmount = Number(localStorage.getItem(KEYS.shiftProfit)) || 0;
+        let myShiftDueAmount = Number(localStorage.getItem(KEYS.shiftDue)) || 0;
+        let isShiftActive = localStorage.getItem(KEYS.shiftActive) === 'true';
+        let currentCategory = 'all';
+        let pendingSale = null;
+        let lastReceiptData = null;
+
+        // Theme
+        const savedTheme = localStorage.getItem(KEYS.theme) || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.getElementById('themeBtn').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem(KEYS.theme, next);
+            document.getElementById('themeBtn').textContent = next === 'dark' ? '☀️' : '🌙';
+        }
+
+        function saveData() {
+            localStorage.setItem(KEYS.products, JSON.stringify(products));
+            localStorage.setItem(KEYS.due, JSON.stringify(dueLedger));
+            localStorage.setItem(KEYS.history, JSON.stringify(salesHistory));
+            localStorage.setItem(KEYS.shiftSales, myShiftSalesAmount);
+            localStorage.setItem(KEYS.shiftProfit, myShiftProfitAmount);
+            localStorage.setItem(KEYS.shiftDue, myShiftDueAmount);
+            localStorage.setItem(KEYS.shiftActive, isShiftActive);
+        }
+
+        function showToast(msg, type = 'info') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = `toast ${type} show`;
+            setTimeout(() => t.classList.remove('show'), 2600);
+        }
+
+        function formatMoney(n) {
+            return '৳ ' + Number(n).toLocaleString('bn-BD');
+        }
+
+        function formatDate() {
+            return new Date().toLocaleString('bn-BD', {
+                day: 'numeric', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+        }
+
+        function switchTab(tab, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(`section-${tab}`).classList.add('active');
+            if (btn) btn.classList.add('active');
+            if (tab === 'due') renderDueLedger();
+            if (tab === 'history') renderHistory();
+            if (tab === 'reports') renderReports();
+        }
+
+        function toggleUnitFields() {
+            const type = document.getElementById('pUnitType').value;
+            const bagFields = document.getElementById('bagFields');
+            if (type === 'piece') {
+                bagFields.style.display = 'none';
+                document.getElementById('pBuyPrice').placeholder = "কেনা দাম (প্রতি পিস)";
+                document.getElementById('pSellPrice').placeholder = "বিক্রি দাম (প্রতি পিস)";
+            } else {
+                bagFields.style.display = 'flex';
+                document.getElementById('pBuyPrice').placeholder = "কেনা দাম (প্রতি কেজি)";
+                document.getElementById('pSellPrice').placeholder = "বিক্রি দাম (প্রতি কেজি)";
+            }
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            document.querySelector(`.chip[data-cat="${cat}"]`).classList.add('active');
+            renderProducts();
+        }
+
+        function addProduct() {
+            const name = document.getElementById('pName').value.trim();
+            const category = document.getElementById('pCategory').value;
+            const unitType = document.getElementById('pUnitType').value;
+            const buyPrice = Number(document.getElementById('pBuyPrice').value);
+            const sellPrice = Number(document.getElementById('pSellPrice').value);
+
+            if (!name || isNaN(buyPrice) || isNaN(sellPrice) || buyPrice < 0 || sellPrice < 0) {
+                showToast('নাম ও দাম সঠিকভাবে দিন!', 'error');
+                return;
+            }
+
+            let totalKg = 0, kgPerBag = 0;
+            if (unitType === 'kg') {
+                const bags = Number(document.getElementById('pBagCount').value) || 0;
+                kgPerBag = Number(document.getElementById('pKgPerBag').value) || 0;
+                totalKg = bags * kgPerBag;
+                if (totalKg <= 0) { showToast('পরিমাণ সঠিক দিন!', 'error'); return; }
+            } else {
+                totalKg = Number(document.getElementById('pBagCount').value) || 0;
+                if (totalKg <= 0) { showToast('পরিমাণ সঠিক দিন!', 'error'); return; }
+            }
+
+            products.unshift({ id: Date.now(), name, category, unitType, totalKg, kgPerBag, buyPrice, sellPrice });
+            saveData();
+            renderProducts();
+
+            document.getElementById('pName').value = '';
+            document.getElementById('pBagCount').value = '';
+            document.getElementById('pKgPerBag').value = '';
+            document.getElementById('pBuyPrice').value = '';
+            document.getElementById('pSellPrice').value = '';
+            toggleUnitFields();
+            showToast('পণ্য সেভ হয়েছে!', 'success');
+        }
+
+        function processSale(id, type, isDue) {
+            const prod = products.find(p => p.id === id);
+            if (!prod) return;
+            const qtyInput = document.getElementById(`qty_${id}_${type}`);
+            const qty = Number(qtyInput.value);
+            if (!qty || qty <= 0) { showToast('পরিমাণ দিন!', 'error'); return; }
+            if (prod.totalKg < qty) { showToast('স্টকে পর্যাপ্ত নেই!', 'error'); return; }
+
+            const defaultTotal = qty * prod.sellPrice;
+            const unitLabel = type === 'kg' ? 'কেজি' : 'পিস';
+            pendingSale = { prod, qty, type, isDue, unitLabel, defaultTotal };
+
+            document.getElementById('saleModalTitle').textContent = isDue ? 'বাকিতে বিক্রি' : 'ক্যাশে বিক্রি';
+            document.getElementById('saleProductInfo').textContent = `${prod.name} — ${qty} ${unitLabel} | স্ট্যান্ডার্ড: ${formatMoney(defaultTotal)}`;
+            document.getElementById('saleAmount').value = defaultTotal;
+
+            const cf = document.getElementById('dueCustomerField');
+            if (isDue) {
+                cf.classList.remove('hidden');
+                document.getElementById('saleCustomer').value = '';
+            } else {
+                cf.classList.add('hidden');
+            }
+            document.getElementById('saleModal').classList.add('show');
+        }
+
+        function closeSaleModal() {
+            document.getElementById('saleModal').classList.remove('show');
+            pendingSale = null;
+        }
+
+        function confirmSale() {
+            if (!pendingSale) return;
+            const { prod, qty, type, isDue, unitLabel } = pendingSale;
+            const totalSalePrice = Number(document.getElementById('saleAmount').value);
+            if (isNaN(totalSalePrice) || totalSalePrice < 0) {
+                showToast('সঠিক টাকা দিন!', 'error');
+                return;
+            }
+
+            const profit = totalSalePrice - qty * prod.buyPrice;
+            prod.totalKg -= qty;
+
+            let customerName = '';
+            if (isDue) {
+                customerName = document.getElementById('saleCustomer').value.trim();
+                if (!customerName) { showToast('কাস্টমারের নাম দিন!', 'error'); return; }
+
+                dueLedger.unshift({
+                    id: Date.now(),
+                    customer: customerName,
+                    item: `${prod.name} (${qty} ${unitLabel})`,
+                    amount: totalSalePrice,
+                    date: formatDate()
+                });
+                if (isShiftActive) {
+                    myShiftDueAmount += totalSalePrice;
+                    myShiftProfitAmount += profit;
+                }
+            } else {
+                if (isShiftActive) {
+                    myShiftSalesAmount += totalSalePrice;
+                    myShiftProfitAmount += profit;
+                }
+            }
+
+            salesHistory.unshift({
+                id: Date.now(),
+                type: isDue ? 'due' : 'cash',
+                product: prod.name,
+                qty, unit: unitLabel,
+                amount: totalSalePrice,
+                profit,
+                customer: customerName || null,
+                date: formatDate()
+            });
+
+            lastReceiptData = {
+                product: prod.name,
+                qty, unit: unitLabel,
+                amount: totalSalePrice,
+                profit,
+                customer: customerName || 'ক্যাশ কাস্টমার',
+                type: isDue ? 'বাকি' : 'ক্যাশ',
+                date: formatDate()
+            };
+
+            const qtyInput = document.getElementById(`qty_${prod.id}_${type}`);
+            if (qtyInput) qtyInput.value = '';
+
+            saveData();
+            renderProducts();
+            renderDueLedger();
+            closeSaleModal();
+            showToast(isDue ? `বাকিতে জমা: ${formatMoney(totalSalePrice)}` : `বিক্রি সফল! লাভ: ${formatMoney(profit)}`, 'success');
+            showReceipt();
+        }
+
+        function showReceipt() {
+            if (!lastReceiptData) return;
+            const r = lastReceiptData;
+            document.getElementById('receiptContent').innerHTML = `
+                <h3>🏪 স্মার্ট দোকান</h3>
+                <div style="text-align:center; font-size:11px; margin-bottom:6px;">বিক্রির রসিদ</div>
+                <div class="line"></div>
+                <div>তারিখ: ${r.date}</div>
+                <div>কাস্টমার: ${r.customer}</div>
+                <div class="line"></div>
+                <div><b>${r.product}</b></div>
+                <div>${r.qty} ${r.unit} × ${formatMoney(r.amount / r.qty)} = ${formatMoney(r.amount)}</div>
+                <div>ধরন: ${r.type}</div>
+                <div class="line"></div>
+                <div style="font-weight:bold; font-size:15px;">মোট: ${formatMoney(r.amount)}</div>
+                <div style="font-size:11px; margin-top:8px; text-align:center;">ধন্যবাদ আবার আসবেন</div>
+            `;
+            document.getElementById('receiptModal').classList.add('show');
+        }
+
+        function closeReceiptModal() {
+            document.getElementById('receiptModal').classList.remove('show');
+        }
+
+        function printReceipt() {
+            const content = document.getElementById('receiptContent').innerHTML;
+            const win = window.open('', '', 'width=320,height=500');
+            win.document.write(`<html><head><title>রিসিট</title><style>body{font-family:monospace;padding:16px;}</style></head><body>${content}</body></html>`);
+            win.document.close();
+            win.print();
+        }
+
+        function clearDue(dueId) {
+            const idx = dueLedger.findIndex(d => Number(d.id) === Number(dueId));
+            if (idx === -1) return;
+            const item = dueLedger[idx];
+            if (confirm(`${item.customer}-এর ${formatMoney(item.amount)} পরিশোধ হয়েছে?`)) {
+                dueLedger.splice(idx, 1);
+                saveData();
+                renderDueLedger();
+                showToast('বাকি পরিশোধ হয়েছে', 'success');
+            }
+        }
+
+        function toggleShift() {
+            if (!isShiftActive) {
+                isShiftActive = true;
+                myShiftSalesAmount = 0;
+                myShiftProfitAmount = 0;
+                myShiftDueAmount = 0;
+                showToast('শিফট শুরু হলো!', 'success');
+            } else {
+                isShiftActive = false;
+                showToast(`শিফট শেষ! ক্যাশ: ${formatMoney(myShiftSalesAmount)} | লাভ: ${formatMoney(myShiftProfitAmount)}`, 'info');
+            }
+            saveData();
+            updateShiftUI();
+        }
+
+        function updateShiftUI() {
+            const statusEl = document.getElementById('shiftStatus');
+            const btnEl = document.getElementById('shiftBtn');
+            if (isShiftActive) {
+                statusEl.innerText = '🟢 শিফট চালু আছে';
+                statusEl.style.color = '#4ade80';
+                btnEl.innerText = 'শিফট শেষ করুন';
+                btnEl.classList.add('active');
+            } else {
+                statusEl.innerText = '🔴 শিফট বন্ধ আছে';
+                statusEl.style.color = '#cbd5e1';
+                btnEl.innerText = 'নতুন শিফট শুরু';
+                btnEl.classList.remove('active');
+            }
+            document.getElementById('myShiftSales').innerText = formatMoney(myShiftSalesAmount);
+            document.getElementById('myShiftProfit').innerText = formatMoney(myShiftProfitAmount);
+            document.getElementById('myShiftDue').innerText = formatMoney(myShiftDueAmount);
+        }
+
+        function askMarketAI() {
+            const low = products.filter(p => p.unitType === 'kg' ? p.totalKg <= 25 : p.totalKg <= 8);
+            const totalStock = products.reduce((s, p) => s + p.totalKg * p.buyPrice, 0);
+            const totalDue = dueLedger.reduce((s, d) => s + d.amount, 0);
+            const tips = [
+                `💡 মোট স্টক মূল্য প্রায় ${formatMoney(totalStock)}। নিয়মিত চেক করুন।`,
+                `💡 মোট বাকি আছে ${formatMoney(totalDue)}। কাস্টমারদের তাগাদা দিন।`,
+                `💡 সিগারেট ও খুচরা আইটেম দ্রুত চলে। শিফট শেষে মিলিয়ে নিন।`,
+                `💡 চাল-ডালের চাহিদা সবসময় ভালো। পর্যাপ্ত স্টক রাখুন।`
+            ];
+            const tip = tips[Math.floor(Math.random() * tips.length)];
+            const box = document.getElementById('aiReply');
+            if (low.length > 0) {
+                box.innerHTML = `⚠️ <b>কম স্টক:</b> ${low.map(i => i.name).join(', ')}<br><br>${tip}`;
+            } else {
+                box.innerHTML = `✅ সব পণ্যের স্টক পর্যাপ্ত।<br><br>${tip}`;
+            }
+        }
+
+        function openEditModal(id) {
+            const prod = products.find(p => p.id === id);
+            if (!prod) return;
+            document.getElementById('editId').value = prod.id;
+            document.getElementById('editName').value = prod.name;
+            document.getElementById('editCategory').value = prod.category || 'অন্যান্য';
+            document.getElementById('editBuyPrice').value = prod.buyPrice;
+            document.getElementById('editSellPrice').value = prod.sellPrice;
+            document.getElementById('editTotalKg').value = prod.totalKg;
+            document.getElementById('editModal').classList.add('show');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('show');
+        }
+
+        function saveEdit() {
+            const id = Number(document.getElementById('editId').value);
+            const prod = products.find(p => p.id === id);
+            if (!prod) return;
+            prod.name = document.getElementById('editName').value.trim() || prod.name;
+            prod.category = document.getElementById('editCategory').value;
+            prod.buyPrice = Number(document.getElementById('editBuyPrice').value) || prod.buyPrice;
+            prod.sellPrice = Number(document.getElementById('editSellPrice').value) || prod.sellPrice;
+            prod.totalKg = Number(document.getElementById('editTotalKg').value) || prod.totalKg;
+            saveData();
+            renderProducts();
+            closeEditModal();
+            showToast('আপডেট হয়েছে', 'success');
+        }
+
+        function deleteProduct(id) {
+            if (confirm('মুছে ফেলতে চান?')) {
+                products = products.filter(p => p.id !== id);
+                saveData();
+                renderProducts();
+                showToast('মুছে ফেলা হয়েছে', 'info');
+            }
+        }
+
+        function renderProducts() {
+            const list = document.getElementById('productList');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const sortBy = document.getElementById('sortSelect').value;
+            list.innerHTML = '';
+            let lowCount = 0;
+
+            let filtered = products.filter(p => {
+                const matchSearch = p.name.toLowerCase().includes(search);
+                const matchCat = currentCategory === 'all' || p.category === currentCategory;
+                return matchSearch && matchCat;
+            });
+
+            // Sort
+            if (sortBy === 'name') filtered.sort((a, b) => a.name.localeCompare(b.name, 'bn'));
+            else if (sortBy === 'lowstock') filtered.sort((a, b) => a.totalKg - b.totalKg);
+            else if (sortBy === 'profit') filtered.sort((a, b) => (b.sellPrice - b.buyPrice) - (a.sellPrice - a.buyPrice));
+            else if (sortBy === 'stock') filtered.sort((a, b) => b.totalKg - a.totalKg);
+
+            document.getElementById('productCount').textContent = `দেখাচ্ছে ${filtered.length} টি পণ্য (মোট ${products.length})`;
+
+            if (filtered.length === 0) {
+                list.innerHTML = `<div class="empty-state">কোনো পণ্য পাওয়া যায়নি</div>`;
+                document.getElementById('lowStockCount').innerText = '০ টি';
+                updateShiftUI();
+                return;
+            }
+
+            filtered.forEach(item => {
+                let stockText = '', isLow = false;
+                if (item.unitType === 'kg') {
+                    const bags = (item.totalKg / (item.kgPerBag || 25)).toFixed(1);
+                    stockText = `${item.totalKg} কেজি (${bags} বস্তা)`;
+                    if (item.totalKg <= 25) isLow = true;
+                } else {
+                    stockText = `${item.totalKg} পিস`;
+                    if (item.totalKg <= 8) isLow = true;
+                }
+                if (isLow) lowCount++;
+
+                const profit = item.sellPrice - item.buyPrice;
+                const pct = item.buyPrice > 0 ? ((profit / item.buyPrice) * 100).toFixed(0) : 0;
+
+                const card = document.createElement('div');
+                card.className = `product-card ${isLow ? 'low-stock' : ''}`;
+                card.innerHTML = `
+                    <div class="product-info">
+                        <h3>${item.name} <span class="cat-tag">${item.category || ''}</span></h3>
+                        <p>কেনা: ৳${item.buyPrice} | বিক্রি: ৳${item.sellPrice}
+                            <span class="profit-tag">লাভ ৳${profit} (${pct}%)</span>
+                        </p>
+                        <span class="stock-badge ${isLow ? 'low-stock-badge' : 'in-stock'}">
+                            ${isLow ? '⚠️ কম: ' + stockText : stockText}
+                        </span>
+                    </div>
+                    <div class="action-right">
+                        <div class="sell-box">
+                            <input type="number" id="qty_${item.id}_${item.unitType}" class="sell-input" placeholder="পরিমাণ" step="any">
+                            <button class="btn btn-sell" onclick="processSale(${item.id}, '${item.unitType}', false)">ক্যাশ</button>
+                            <button class="btn btn-due" onclick="processSale(${item.id}, '${item.unitType}', true)">বাকি</button>
+                        </div>
+                        <div class="btn-group-row">
+                            <button class="btn btn-edit" onclick="openEditModal(${item.id})">✏️</button>
+                            <button class="btn btn-delete" onclick="deleteProduct(${item.id})">🗑</button>
+                        </div>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+
+            document.getElementById('lowStockCount').innerText = lowCount + ' টি';
+            updateShiftUI();
+        }
+
+        function renderDueLedger() {
+            const container = document.getElementById('dueList');
+            const search = (document.getElementById('dueSearch')?.value || '').toLowerCase();
+            container.innerHTML = '';
+            const filtered = dueLedger.filter(d =>
+                d.customer.toLowerCase().includes(search) || d.item.toLowerCase().includes(search)
+            );
+            const total = dueLedger.reduce((s, d) => s + d.amount, 0);
+            document.getElementById('totalDueAmount').innerText = formatMoney(total);
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="empty-state">কোনো বাকি নেই</div>`;
+                return;
+            }
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'due-card';
+                card.innerHTML = `
+                    <div class="product-info">
+                        <h3 style="color:#f87171;">👤 ${item.customer}</h3>
+                        <p>${item.item}</p>
+                        <p style="font-size:11px; color:var(--text-secondary);">${item.date}</p>
+                        <p style="font-weight:700; margin-top:3px;">বাকি: ${formatMoney(item.amount)}</p>
+                    </div>
+                    <button class="btn btn-pay" onclick="clearDue(${item.id})">টাকা শোধ</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('historyList');
+            container.innerHTML = '';
+            if (salesHistory.length === 0) {
+                container.innerHTML = `<div class="empty-state">এখনো বিক্রি হয়নি</div>`;
+                return;
+            }
+            salesHistory.slice(0, 60).forEach(item => {
+                const isDue = item.type === 'due';
+                const card = document.createElement('div');
+                card.className = 'history-card';
+                card.innerHTML = `
+                    <div class="product-info">
+                        <h3>${item.product}</h3>
+                        <p>${item.qty} ${item.unit} • ${isDue ? 'বাকি' : 'ক্যাশ'}${item.customer ? ' • ' + item.customer : ''}</p>
+                        <p style="font-size:11px; color:var(--text-secondary);">${item.date}</p>
+                    </div>
+                    <div style="text-align:right;">
+                        <p style="font-weight:700; color:${isDue ? '#f87171' : '#4ade80'};">${formatMoney(item.amount)}</p>
+                        <p style="font-size:11px; color:var(--text-secondary);">লাভ: ${formatMoney(item.profit || 0)}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function clearHistory() {
+            if (confirm('সব ইতিহাস মুছবেন?')) {
+                salesHistory = [];
+                saveData();
+                renderHistory();
+                showToast('ইতিহাস মুছে ফেলা হয়েছে', 'info');
+            }
+        }
+
+        function renderReports() {
+            const stockVal = products.reduce((s, p) => s + p.totalKg * p.buyPrice, 0);
+            const potSales = products.reduce((s, p) => s + p.totalKg * p.sellPrice, 0);
+            const totalDue = dueLedger.reduce((s, d) => s + d.amount, 0);
+            document.getElementById('reportStockValue').innerText = formatMoney(stockVal);
+            document.getElementById('reportPotentialSales').innerText = formatMoney(potSales);
+            document.getElementById('reportTotalDue').innerText = formatMoney(totalDue);
+            document.getElementById('reportProductCount').innerText = products.length + ' টি';
+        }
+
+        function exportData() {
+            const data = {
+                products, dueLedger, salesHistory,
+                myShiftSalesAmount, myShiftProfitAmount, myShiftDueAmount, isShiftActive,
+                exportDate: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `smart-shop-backup-${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('ব্যাকআপ ডাউনলোড হয়েছে!', 'success');
+        }
+
+        function importData(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                try {
+                    const data = JSON.parse(ev.target.result);
+                    if (data.products) products = data.products;
+                    if (data.dueLedger) dueLedger = data.dueLedger;
+                    if (data.salesHistory) salesHistory = data.salesHistory;
+                    if (data.myShiftSalesAmount !== undefined) myShiftSalesAmount = data.myShiftSalesAmount;
+                    if (data.myShiftProfitAmount !== undefined) myShiftProfitAmount = data.myShiftProfitAmount;
+                    if (data.myShiftDueAmount !== undefined) myShiftDueAmount = data.myShiftDueAmount;
+                    if (data.isShiftActive !== undefined) isShiftActive = data.isShiftActive;
+                    saveData();
+                    renderProducts();
+                    renderDueLedger();
+                    updateShiftUI();
+                    showToast('ইমপোর্ট সফল!', 'success');
+                } catch (err) {
+                    showToast('ফাইল পড়তে সমস্যা!', 'error');
+                }
+            };
+            reader.readAsText(file);
+            e.target.value = '';
+        }
+
+        // Init
+        renderProducts();
+        renderDueLedger();
+        updateShiftUI();
+        toggleUnitFields();
+    </script>
+</body>
+</html>
